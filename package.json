@@ -1,0 +1,75 @@
+{
+  "name": "codingame",
+  "displayName": "codingame",
+  "description": "Improve your CodinGame bot programming efficiency",
+  "version": "0.0.1",
+  "engines": {
+    "vscode": "^1.52.0"
+  },
+  "categories": [
+    "Other"
+  ],
+  "activationEvents": [
+    "*"
+  ],
+  "main": "./out/extension.js",
+  "contributes": {
+    "commands": [
+      {
+        "command": "codingame.createNewProject",
+        "title": "Create New Project",
+        "category": "codingame"
+      }
+    ],
+    "configuration": {
+      "title": "CodinGame",
+      "properties": {
+        "codinGame.rootPath": {
+          "type": "string",
+          "default": null,
+          "description": "Specifies the root directory of CodinGame projects"
+        },
+        "codinGame.includePath": {
+          "type": "string",
+          "default": null,
+          "description": "Specifies the folder path containing common headers you use for bots and tools. If not defined, it will be codinGame.rootPath/tools/include"
+        },
+        "codinGame.libPath": {
+          "type": "string",
+          "default": null,
+          "description": "Specifies the folder path containing libraries for tools. If not defined, it will be codinGame.rootPath/tools/lib"
+        },
+        "codinGame.scriptsPath": {
+          "type": "string",
+          "default": null,
+          "description": "Specifies the folder path containing scripts for bots and tools. If not defined, it will be codinGame.rootPath/tools/scripts"
+        },
+        "codinGame.starterPath": {
+          "type": "string",
+          "default": null,
+          "description": "Specifies the folder path containing an initial configuration for a bot. If not defined, it will be codinGame.rootPath/tools/starter"
+        }
+      }
+    }
+  },
+  "scripts": {
+    "vscode:prepublish": "npm run compile",
+    "compile": "tsc -p ./",
+    "watch": "tsc -watch -p ./",
+    "pretest": "npm run compile && npm run lint",
+    "lint": "eslint src --ext ts"
+  },
+  "devDependencies": {
+    "@types/vscode": "^1.53.0",
+    "@types/glob": "^7.1.3",
+    "@types/mocha": "^8.0.4",
+    "@types/node": "^12.11.7",
+    "eslint": "^7.19.0",
+    "@typescript-eslint/eslint-plugin": "^4.14.1",
+    "@typescript-eslint/parser": "^4.14.1",
+    "glob": "^7.1.6",
+    "mocha": "^8.2.1",
+    "typescript": "^4.1.3",
+    "vscode-test": "^1.5.0"
+  }
+}
