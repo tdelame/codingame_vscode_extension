@@ -17,6 +17,10 @@ Create a new C++ bot project from a starter folder. The starter folder is expect
 
 I provide a working example of [starter C++ CodinGame project](https://github.com/tdelame/codingame_starter) in another repository.
 
+### Configure Project Build
+
+Configure the build a bot, choosing its build type among Dev, Release, and Debug. Once the configuration is done, you can press `CTRL+SHIFT+B` to build the project, if you used [my starter C++ CodinGame project](https://github.com/tdelame/codingame_starter).
+
 ## Requirements
 
 You must have the EditorConfig for VS Code extension as well as the C/C++ extension activated.

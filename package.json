@@ -19,8 +19,21 @@
         "command": "codingame.createNewProject",
         "title": "Create New Project",
         "category": "codingame"
+      },
+      {
+        "command": "codingame.configureBuild",
+        "title": "Configure Build",
+        "category": "codingame"
       }
     ],
+    "menus": {
+      "commandPalette": [
+        {
+          "command": "codingame.configureBuild",
+          "when": "workspaceFolderCount > 0"
+        }
+      ]
+    },
     "configuration": {
       "title": "CodinGame",
       "properties": {
