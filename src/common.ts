@@ -48,7 +48,7 @@ export function getConfig() {
 export async function getRootPath() {
   let rootPath = getConfig().get<string>('rootPath');
 
-  if ( !rootPath ) {
+  if (!rootPath) {
     vscode.window.showInformationMessage(`CodinGame root path not set. Configure the extension or set codinGame.rootPath setting in the input box`);
 
     const inputOptions = <vscode.InputBoxOptions>{

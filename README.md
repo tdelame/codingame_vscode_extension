@@ -8,6 +8,8 @@ Keep in mind that this extension is the first I write. Also, I never programmed 
 
 ### Create a New C++ Bot Project
 
+![Create New Bot Command](data/create_new_bot.gif)
+
 Create a new C++ bot project from a starter folder. The starter folder is expected to respect these rules:
 - have a CMakeLists.txt at its root to build the project. This CMakeLists.txt must honor the following variables
   - REPOSITORY_ROOT, path of the root CodinGame folder, containing all bots and tools,
@@ -19,7 +21,9 @@ I provide a working example of [starter C++ CodinGame project](https://github.co
 
 ### Configure Project Build
 
-Configure the build a bot, choosing its build type among Dev, Release, and Debug. Once the configuration is done, you can press `CTRL+SHIFT+B` to build the project, if you used [my starter C++ CodinGame project](https://github.com/tdelame/codingame_starter).
+![Configure Bot Command](data/configure_bot.gif)
+
+Configure the build a bot, choosing its build type among Dev, Release, and Debug. Once the configuration is done, you can press `CTRL+SHIFT+B` to build the project, if you used [my starter C++ CodinGame project](https://github.com/tdelame/codingame_starter). You will also have symbol indexing, allowing you to navigate to symbols definitions or declarations, open headers, rename variables, find references, and so on.
 
 ## Requirements
 

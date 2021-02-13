@@ -11,7 +11,7 @@ async function createNewProject() {
   }
 
   const starterPath = await getStarterPath();
-  if( !starterPath || !checkDirectoryExistsSync(starterPath) ) {
+  if (!starterPath || !checkDirectoryExistsSync(starterPath)) {
     vscode.window.showErrorMessage(`Invalid C++ CodinGame starter bot path`);
     return;
   }
@@ -25,18 +25,18 @@ async function createNewProject() {
   while (loop) {
     loop = false;
     await vscode.window.showInputBox(inputOptions).then(async name => {
-      if( !name ) {
+      if (!name) {
         return;
       }
 
       const newProjectPath = vscode.Uri.joinPath(vscode.Uri.parse(rootPath), name);
-      if( checkDirectoryExistsSync( newProjectPath.fsPath ) ) {
+      if (checkDirectoryExistsSync(newProjectPath.fsPath)) {
         vscode.window.showInformationMessage(`${name} project already exists in ${rootPath}`);
         loop = true;
         return;
       }
 
-      await vscode.workspace.fs.copy( vscode.Uri.parse(starterPath), newProjectPath);
+      await vscode.workspace.fs.copy(vscode.Uri.parse(starterPath), newProjectPath);
       vscode.commands.executeCommand('vscode.openFolder', newProjectPath, false);
     });
   }
