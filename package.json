@@ -24,12 +24,21 @@
         "command": "codingame.configureBuild",
         "title": "Configure Build",
         "category": "codingame"
+      },
+      {
+        "command": "codingame.saveCurrentVersion",
+        "title": "Save Current Version",
+        "category": "codingame"
       }
     ],
     "menus": {
       "commandPalette": [
         {
           "command": "codingame.configureBuild",
+          "when": "workspaceFolderCount > 0"
+        },
+        {
+          "command": "codingame.saveCurrentVersion",
           "when": "workspaceFolderCount > 0"
         }
       ]
