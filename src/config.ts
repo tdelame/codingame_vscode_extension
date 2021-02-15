@@ -1,50 +1,5 @@
 import * as vscode from 'vscode';
-import * as fs from 'fs';
-
-export function checkFileExists(filePath: string): Promise<boolean> {
-  return new Promise((resolve, reject) => {
-    fs.stat(filePath, (err, stats) => {
-      if (stats && stats.isFile()) {
-        resolve(true);
-      } else {
-        resolve(false);
-      }
-    });
-  });
-}
-
-export function checkDirectoryExists(dirPath: string): Promise<boolean> {
-  return new Promise((resolve, reject) => {
-    fs.stat(dirPath, (err, stats) => {
-      if (stats && stats.isDirectory()) {
-        resolve(true);
-      } else {
-        resolve(false);
-      }
-    });
-  });
-}
-
-export function checkFileExistsSync(filePath: string): boolean {
-  try {
-    return fs.statSync(filePath).isFile();
-  } catch (e) {
-  }
-  return false;
-}
-
-export function checkDirectoryExistsSync(dirPath: string): boolean {
-  try {
-    return fs.statSync(dirPath).isDirectory();
-  } catch (e) {
-  }
-  return false;
-}
-
-export function emailValidator(email: string) {
-  const re = /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
-  return re.test(String(email).toLowerCase());
-}
+import { emailValidator, checkDirectoryExistsSync } from './utils';
 
 export function getConfig() {
   return vscode.workspace.getConfiguration('codinGame');
