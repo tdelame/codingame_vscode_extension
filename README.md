@@ -16,6 +16,7 @@ Create a new C++ bot project from a starter folder. The starter folder is expect
   - INCLUDE_DIR, path to the main C++ include folder where you can place common headers and external library headers,
   - LIB_DIR, path to the main C++ libraries folder where you can place external libraries.
 - the build places the source code of the different bot version in a `package` folder. Remember that the CodinGame platform requires the bots to fit in a single file. The current bot version is in `package/bot.cpp`
+- define `codinGame.gameId` and `codinGame.isMulti` settings.
 
 I provide a working example of [starter C++ CodinGame project](https://github.com/tdelame/codingame_starter) in another repository.
 
@@ -28,6 +29,16 @@ Configure the build a bot, choosing its build type among Dev, Release, and Debug
 ### 1.3. Save Current Bot Version
 
 Save the current version of the bot, i.e. the file `package/bot.cpp`, in a new file in the `package` folder. The new file is added the `CMakeLists.txt` in order to be compiled.
+
+### 1.4. Get CodinGamer Id
+
+Get your CodinGamer Id from the email and password associated to your CodinGame account. You may need this information for other tools.
+
+### 1.5. Send Bot Code
+
+Send a version of your bot code to CodinGame. Note that this feature is actually requesting the platform to play a match with your sent bot, in order to save the source code online. Thus, it can take 10s to 30s.
+
+>TODO: Check if the bot was correctly compiled on the platform.
 
 ## 2. Requirements
 
@@ -46,7 +57,11 @@ This extension contributes the following settings:
 * `codinGame.rootPath`: set it to the root directory of your CodinGame projects.
 * `codinGame.includePath`: set it to the folder path containing common headers you use in your bots and tools. If not defined, it will be `codinGame.rootPath/tools/include`.
 * `codinGame.libPath`: set it to the folder path containing common libraries you use in your tools. If not defined, it will be `codinGame.rootPath/tools/lib`.
-* `codinGame.starterPath`: set it to the folder path containing an initial configuration for a bot. If not defined, it will be `codingGame.rootPath/tools/starter`.
+* `codinGame.starterPath`: set it to the folder path containing an initial configuration for a bot. If not defined, it will be `codingGame.rootPath/tools/starter`
+* `codinGame.gamerPassword`: set it to the password associated to your CodinGame account. I am not very proud of storing this information in settings, but I do not want to bother too much about this detail
+* `codinGame.gamerEmail`: set it to the email address associated to your CodinGame account
+* `codinGame.gameId`: set it in your project `.vscode/settings.json` file to the game Id of your bot
+* `codinGame.isMulti`: set it to `true` in your project `.vscode/settings.json` file if your bot is for a multiplayer game.
 
 ## 4. Known Issues
 
