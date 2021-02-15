@@ -1,7 +1,12 @@
 import * as vscode from 'vscode';
 import * as child_process from 'child_process';
 import * as fs from 'fs';
-import { checkFileExistsSync, checkDirectoryExistsSync, getRootPath, getIncludePath, getLibPath, getStarterPath } from './common';
+
+const esmImport = require('esm')(module);
+// eslint-disable-next-line @typescript-eslint/naming-convention
+const { CookieJar, fetch } = esmImport('node-fetch-cookies');
+
+import { checkFileExistsSync, checkDirectoryExistsSync, getGameId, getIsMulti, getGamerPassword, getGamerEmail, getRootPath, getIncludePath, getLibPath, getStarterPath } from './common';
 
 async function createNewProject() {
 
@@ -140,10 +145,117 @@ async function saveCurrentVersion() {
   });
 }
 
+export async function getCodinGamerId() {
+  const email = await getGamerEmail();
+  if (!email) {
+    return;
+  }
+
+  const password = await getGamerPassword();
+  if (!password) {
+    return;
+  }
+
+  const cookieJar = new CookieJar();
+  try {
+    const answer = await fetch(cookieJar, 'https://www.codingame.com/services/Codingamer/loginSiteV2', {
+      method: 'POST',
+      body: JSON.stringify([email, password, true])
+    });
+    const content = await answer.json();
+    vscode.window.showInformationMessage(`Your CodinGamer Id is ${content['codinGamer']['userId']}`);
+  }
+  catch( error ) {
+    vscode.window.showErrorMessage(`Failed to fetch your CodinGamer Id: ${error}`);
+  }
+}
+
+export async function sendBotCode() {
+  // fetch project name and path
+  if (vscode.workspace.workspaceFolders === undefined) {
+    vscode.window.showErrorMessage("Cannot configure CodinGame project build as there is no opened folder");
+    return;
+  }
+  const rootUri = vscode.workspace.workspaceFolders[0].uri;
+  const projectName = vscode.workspace.workspaceFolders[0].name;
+
+  // make sure current version exists
+  const currentVersionUri = vscode.Uri.joinPath(rootUri, 'package', 'bot.cpp');
+  if (!checkFileExistsSync(currentVersionUri.fsPath)) {
+    vscode.window.showErrorMessage(`${projectName}: no current bot version. Please configure and build the project first.`);
+    return;
+  }
+  let bodyDict = {
+    code: fs.readFileSync(currentVersionUri.fsPath, 'utf-8'),
+    'programmingLaungageId': 'C++',
+    ...(getIsMulti() ? {'multi': {'agentsIds': [-1, -2], 'gameOptions': null}} : null)
+  };
+
+  // make sure we know the gamer password and email, as well as the game Id
+  const gameId = getGameId();
+  if (!gameId) {
+    vscode.window.showErrorMessage(`${projectName}: unknown GameId, cannot send current version to CodinGame`);
+    return;
+  }
+  const gamerEmail = await getGamerEmail();
+  if (!gamerEmail) {
+    return;
+  }
+  const gamerPassword = await getGamerPassword();
+  if (!gamerPassword) {
+    return;
+  }
+
+  const cookieJar = new CookieJar();
+
+  try {
+    let response = await fetch(cookieJar, 'https://www.codingame.com/services/Codingamer/loginSiteV2', {
+      method: 'POST',
+      body: JSON.stringify([gamerEmail, gamerPassword, true])
+    });
+
+    if (!response.ok) {
+      vscode.window.showErrorMessage(`Failed to login on CodinGame: ${response.statusText}`);
+      return;
+    }
+
+    let content = await response.json();
+    const gamerId = content['codinGamer']['userId'];
+    response = await fetch(cookieJar, 'https://www.codingame.com/services/Puzzle/generateSessionFromPuzzlePrettyId', {
+      method: 'POST',
+      body: JSON.stringify([gamerId, gameId, false])
+    });
+
+    if (!response.ok) {
+      vscode.window.showErrorMessage(`Failed to open session for game ${gameId} on CodinGame: ${response.statusText}`);
+      return;
+    }
+
+    content = await response.json();
+    const handle = content['handle'];
+    response = await fetch(cookieJar, 'https://www.codingame.com/services/TestSession/play', {
+      method: 'POST',
+      body: JSON.stringify([handle, bodyDict])
+    });
+
+    if (!response.ok) {
+      vscode.window.showErrorMessage(`Failed to send bot code for game ${gameId}: ${response.statusText}`);
+      return;
+    }
+
+    vscode.window.showInformationMessage(`Bot code for game ${gameId} sent`);
+  }
+  catch( error ) {
+    vscode.window.showErrorMessage(`Failed to send bot code for game ${gameId} on CodinGame: ${error}`);
+  }
+}
+
 export async function activate(context: vscode.ExtensionContext) {
   vscode.commands.registerCommand("codingame.createNewProject", createNewProject);
   vscode.commands.registerCommand("codingame.configureBuild", configureBuild);
   vscode.commands.registerCommand("codingame.saveCurrentVersion", saveCurrentVersion);
+  vscode.commands.registerCommand("codingame.getCodinGamerId", getCodinGamerId);
+  vscode.commands.registerCommand("codingame.sendBotCode", sendBotCode);
   console.log("CodinGame extension activated");
 }
 

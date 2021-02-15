@@ -41,8 +41,65 @@ export function checkDirectoryExistsSync(dirPath: string): boolean {
   return false;
 }
 
+export function emailValidator(email: string) {
+  const re = /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+  return re.test(String(email).toLowerCase());
+}
+
 export function getConfig() {
   return vscode.workspace.getConfiguration('codinGame');
+}
+
+export function getGameId() {
+  return getConfig().get<string>('gameId');
+}
+
+export function getIsMulti() {
+  return getConfig().get<boolean>('isMulti');
+}
+
+export async function getGamerPassword() {
+  let gamerPassword = getConfig().get<string>('gamerPassword');
+  if (!gamerPassword) {
+    const passwordInputOption = <vscode.InputBoxOptions>{
+      prompt: 'Enter your CodinGame Password',
+      password: true,
+      ignoreFocusOut: true
+    };
+
+    const inputPassword = await vscode.window.showInputBox(passwordInputOption);
+    if( !inputPassword) {
+      return undefined;
+    }
+
+    await getConfig().update('gamerPassword', inputPassword, vscode.ConfigurationTarget.Global);
+    gamerPassword = inputPassword;
+  }
+  return gamerPassword;
+}
+
+export async function getGamerEmail() {
+  let gamerEmail = getConfig().get<string>('gamerEmail');
+  if (!gamerEmail) {
+    const emailInputOption = <vscode.InputBoxOptions>{
+      prompt: 'Enter your CodinGame Email',
+      validateInput: (text: string): string | undefined => {
+        if (!emailValidator(text)) {
+          return 'Invalid Email';
+        }
+        return undefined;
+      }
+    };
+
+    const inputEmail = await vscode.window.showInputBox(emailInputOption);
+    if( !inputEmail) {
+      return undefined;
+    }
+
+    await getConfig().update('gamerEmail', inputEmail, vscode.ConfigurationTarget.Global);
+    gamerEmail = inputEmail;
+  }
+  return gamerEmail;
 }
 
 export async function getRootPath() {

@@ -29,6 +29,16 @@
         "command": "codingame.saveCurrentVersion",
         "title": "Save Current Version",
         "category": "codingame"
+      },
+      {
+        "command": "codingame.getCodinGamerId",
+        "title": "Get CodinGamer Id",
+        "category": "codingame"
+      },
+      {
+        "command": "codingame.sendBotCode",
+        "title": "Send Your Bot Code to CodinGame",
+        "category": "codingame"
       }
     ],
     "menus": {
@@ -39,6 +49,10 @@
         },
         {
           "command": "codingame.saveCurrentVersion",
+          "when": "workspaceFolderCount > 0"
+        },
+        {
+          "command": "codingame.sendBotCode",
           "when": "workspaceFolderCount > 0"
         }
       ]
@@ -61,15 +75,31 @@
           "default": null,
           "description": "Specifies the folder path containing libraries for tools. If not defined, it will be codinGame.rootPath/tools/lib"
         },
-        "codinGame.scriptsPath": {
-          "type": "string",
-          "default": null,
-          "description": "Specifies the folder path containing scripts for bots and tools. If not defined, it will be codinGame.rootPath/tools/scripts"
-        },
         "codinGame.starterPath": {
           "type": "string",
           "default": null,
           "description": "Specifies the folder path containing an initial configuration for a bot. If not defined, it will be codinGame.rootPath/tools/starter"
+        },
+        "codinGame.gamerPassword": {
+          "type": "string",
+          "default": null,
+          "description": "Specifies your CodinGamer Id"
+        },
+        "codinGame.gamerEmail": {
+          "type": "string",
+          "format": "email",
+          "default": null,
+          "description": "Specifies the email associated to your CodinGame account"
+        },
+        "codinGame.gameId": {
+          "type": "string",
+          "default": null,
+          "description": "Specifies the game ID of your current bot"
+        },
+        "codinGame.isMulti": {
+          "type": "boolean",
+          "default": true,
+          "description": "Specifies if the current bot is for a multiplayer game on CodinGame"
         }
       }
     }
@@ -82,15 +112,18 @@
     "lint": "eslint src --ext ts"
   },
   "devDependencies": {
-    "@types/vscode": "^1.53.0",
     "@types/glob": "^7.1.3",
     "@types/mocha": "^8.0.4",
     "@types/node": "^12.11.7",
-    "eslint": "^7.19.0",
+    "@types/vscode": "^1.53.0",
+    "@types/node-fetch": "1.6.9",
     "@typescript-eslint/eslint-plugin": "^4.14.1",
     "@typescript-eslint/parser": "^4.14.1",
+    "esm": "3.2.25",
+    "eslint": "^7.19.0",
     "glob": "^7.1.6",
     "mocha": "^8.2.1",
+    "node-fetch-cookies": "^2.0.1",
     "typescript": "^4.1.3",
     "vscode-test": "^1.5.0"
   }
