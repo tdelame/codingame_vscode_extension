@@ -2,8 +2,9 @@
 
 This extension gathers some tools I use to develop more easily bots for CodinGame. The priorities of this extension are to satisfy my current needs while being simple. As a result, the extension is not very flexible or customizable.
 
-Keep in mind that this extension is the first I write. Also, I never programmed in TypeScript before. Thus, there might be silly things I do here that make you want to pull your hair. If you have any improvements to suggest, let me know!
+Keep in mind that this extension is the first I write. Also, I never programmed in TypeScript before. Thus, there might be silly things I do here that make you want to pull your hair.
 
+> If you have any feature or improvement suggestions or want to participate in the development, let me know!
 ## 1. Features
 
 ### 1.1. Create a New C++ Bot Project
@@ -67,4 +68,14 @@ This extension contributes the following settings:
 
 ## 5. Release Notes
 
-### 1.0.0
+## 1.0.0
+
+### Added
+- Command to create a bot project from a starter project
+- Command to configure a bot build system
+- Command to save current bot code as a named version
+- Command to get CodinGamer Id from an account email + password
+- Command to send a bot to CodinGame
+- Global settings for `rootPath`, `includePath`, `libPath`, and `starterPath` that are used to create and configure a bot
+- Global settings for `gamerPassword` and `gamerEmail` to connect to a CodinGame account
+- Project settings for `gameId` and `isMulti` that are used to send a bot to CodinGame
