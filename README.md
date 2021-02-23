@@ -17,6 +17,7 @@ Create a new C++ bot project from a starter folder. The starter folder is expect
   - INCLUDE_DIR, path to the main C++ include folder where you can place common headers and external library headers,
   - LIB_DIR, path to the main C++ libraries folder where you can place external libraries.
 - the build places the source code of the different bot version in a `package` folder. Remember that the CodinGame platform requires the bots to fit in a single file. The current bot version is in `package/bot.cpp`
+- the `CMakeLists.txt` must ensure the file `PreviousBotVersions.cmake` exists and include it
 - define `codinGame.gameId` and `codinGame.isMulti` settings.
 
 I provide a working example of [starter C++ CodinGame project](https://github.com/tdelame/codingame_starter) in another repository.
@@ -27,15 +28,18 @@ I provide a working example of [starter C++ CodinGame project](https://github.co
 
 Configure the build a bot, choosing its build type among Dev, Release, and Debug. Once the configuration is done, you can press `CTRL+SHIFT+B` to build the project, if you used [my starter C++ CodinGame project](https://github.com/tdelame/codingame_starter). You will also have symbol indexing, allowing you to navigate to symbols definitions or declarations, open headers, rename variables, find references, and so on.
 
-### 1.3. Save Current Bot Version
+### 1.3 Open Bot Project
 
-Save the current version of the bot, i.e. the file `package/bot.cpp`, in a new file in the `package` folder. The new file is added the `CMakeLists.txt` in order to be compiled.
+Open a bot project store in a folder inside the root directory of your CodinGame projects. The command is case insensitive, so if you have a bot project named `MyBot`, you can simply request the project for `mybot`.
+### 1.4. Save Current Bot Version
 
-### 1.4. Get CodinGamer Id
+Save the current version of the bot, i.e. the file `package/bot.cpp`, in a new file in the `package` folder. The new file is added the `PreviousBotVersions.cmake` in order to be compiled.
+
+### 1.5. Get CodinGamer Id
 
 Get your CodinGamer Id from the email and password associated to your CodinGame account. You may need this information for other tools.
 
-### 1.5. Send Bot Code
+### 1.6. Send Bot Code
 
 Send a version of your bot code to CodinGame. Note that this feature is actually requesting the platform to play a match with your sent bot, in order to save the source code online. Thus, it can take 10s to 30s.
 

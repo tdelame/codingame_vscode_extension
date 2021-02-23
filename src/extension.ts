@@ -1,6 +1,7 @@
 import * as vscode from 'vscode';
 
 import { createNewProject } from './commands/createNewProject';
+import { openBotProject } from './commands/openBotProject';
 import { configureBuild } from './commands/configureBuild';
 import { saveCurrentVersion } from './commands/saveCurrentVersion';
 import { getCodinGamerId } from './commands/getCodinGamerId';
@@ -8,6 +9,7 @@ import { sendBotCode } from './commands/sendBotCode';
 
 export async function activate(context: vscode.ExtensionContext) {
   vscode.commands.registerCommand("codingame.createNewProject", createNewProject);
+  vscode.commands.registerCommand("codingame.openBotProject", openBotProject);
   vscode.commands.registerCommand("codingame.configureBuild", configureBuild);
   vscode.commands.registerCommand("codingame.saveCurrentVersion", saveCurrentVersion);
   vscode.commands.registerCommand("codingame.getCodinGamerId", getCodinGamerId);

@@ -32,6 +32,11 @@
         "category": "CodinGame"
       },
       {
+        "command": "codingame.openBotProject",
+        "title": "Open Bot Project",
+        "category": "CodinGame"
+      },
+      {
         "command": "codingame.saveCurrentVersion",
         "title": "Save Current Version",
         "category": "CodinGame"
