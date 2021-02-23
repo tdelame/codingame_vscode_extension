@@ -17,11 +17,7 @@ export async function saveCurrentVersion() {
     vscode.window.showErrorMessage(`${projectName}: no current bot version. Please configure and build the project first.`);
     return;
   }
-  const cmakeFileUri = vscode.Uri.joinPath(rootUri, 'CMakeLists.txt');
-  if (!checkFileExistsSync(cmakeFileUri.fsPath)) {
-    vscode.window.showErrorMessage(`${projectName}: no CMakeLists.txt found. Are you sure you are in a CodinGame bot project?`);
-    return;
-  }
+  const cmakeFileUri = vscode.Uri.joinPath(rootUri, 'PreviousBotVersions.cmake');
 
   // ask for a version name
   const inputOptions = <vscode.InputBoxOptions>{
@@ -40,7 +36,7 @@ export async function saveCurrentVersion() {
       }
 
       const newVersionUri = vscode.Uri.joinPath(rootUri, 'package', name + '.cpp');
-      const newText = `# Version ${name} created at ${Date()}\nadd_executable( ${name} "${newVersionUri.fsPath}" )\n`;
+      const newText = `# Version ${name} created at ${Date()}\nadd_executable( ${name} "package/${name}.cpp" )\n`;
       vscode.workspace.fs.copy(currentVersionUri, newVersionUri);
       fs.appendFileSync(cmakeFileUri.fsPath, newText);
     });
