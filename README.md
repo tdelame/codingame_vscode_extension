@@ -72,7 +72,14 @@ This extension contributes the following settings:
 
 ## 5. Release Notes
 
-## 1.0.0
+## [1.0.1] - 2021-02-23
+
+### Added
+- Command to open bot project
+### Changed
+- save current bot command now uses `PreviousBotVersions.cmake` file
+
+## [1.0.0] - 2021-02-16
 
 ### Added
 - Command to create a bot project from a starter project
