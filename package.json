@@ -91,6 +91,11 @@
           "default": null,
           "description": "Specifies the folder path containing an initial configuration for a bot. If not defined, it will be codinGame.rootPath/tools/starter"
         },
+        "codinGame.cmakeExtra": {
+          "type": "string",
+          "default": null,
+          "description": "Extra arguments passed to CMake command line when configuring the build"
+        },
         "codinGame.gamerPassword": {
           "type": "string",
           "default": null,

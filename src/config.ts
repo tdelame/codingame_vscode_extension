@@ -14,6 +14,11 @@ export function getIsMulti() {
   return getConfig().get<boolean>('isMulti');
 }
 
+export function getCmakeExtraArguments() {
+  const fromConfig = getConfig().get<string>('cmakeExtra');
+  return fromConfig ? fromConfig : "";
+}
+
 export async function getGamerPassword() {
   let gamerPassword = getConfig().get<string>('gamerPassword');
   if (!gamerPassword) {

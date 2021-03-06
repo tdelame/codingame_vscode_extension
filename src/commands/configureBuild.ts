@@ -1,7 +1,7 @@
 import * as vscode from 'vscode';
 import * as child_process from 'child_process';
 import { checkFileExistsSync } from '../utils';
-import { getRootPath, getIncludePath, getLibPath } from '../config';
+import { getRootPath, getIncludePath, getLibPath, getCmakeExtraArguments } from '../config';
 
 export async function configureBuild() {
 
@@ -42,8 +42,9 @@ export async function configureBuild() {
       return;
     }
 
-    let execOptions = <child_process.ExecOptions>{ cwd: buildUri.fsPath };
-    let commandString = `cd ${buildUri.fsPath} && cmake ../ -GNinja -DCMAKE_BUILD_TYPE=${buildType} ` +
+    const execOptions = <child_process.ExecOptions>{ cwd: buildUri.fsPath };
+    const commandString = `cd ${buildUri.fsPath} && ` +
+      `cmake ../ -GNinja -DCMAKE_BUILD_TYPE=${buildType} ${getCmakeExtraArguments()} ` +
       `-DPROJECT_ROOT=${rootPath} -DINCLUDE_DIR=${await getIncludePath()} -DLIB_DIR=${await getLibPath()} && ` +
       `compdb -p ${buildUri.fsPath} list > ${vscode.Uri.joinPath(rootUri, '.vscode', 'compile_commands.json').fsPath}`;
     child_process.exec(commandString, execOptions, (error, stdout, stderr) => {
