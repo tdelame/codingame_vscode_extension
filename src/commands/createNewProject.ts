@@ -1,4 +1,5 @@
 import * as vscode from 'vscode';
+import * as path from 'path';
 import { getRootPath, getStarterPath } from '../config';
 import { checkDirectoryExistsSync, checkFileExistsSync } from '../utils';
 
@@ -18,11 +19,10 @@ export async function createNewProject() {
   }
 
   // ask for a project name
-  const rootPathUri = vscode.Uri.parse(rootPath);
   const inputOptions = <vscode.InputBoxOptions>{
     prompt: `CodinGame Bot Name`,
     validateInput: (text: string): string | undefined => {
-      const projectPath = vscode.Uri.joinPath(rootPathUri, text).fsPath;
+      const projectPath = path.join(rootPath, text);
       if (checkFileExistsSync(projectPath)) {
         return `${text} project already exists in ${rootPath}`;
       }
@@ -36,8 +36,8 @@ export async function createNewProject() {
         return;
       }
 
-      const projectPathUri = vscode.Uri.joinPath(rootPathUri, name);
-      vscode.workspace.fs.copy(vscode.Uri.parse(starterPath), projectPathUri);
+      const projectPathUri = vscode.Uri.joinPath(vscode.Uri.file(rootPath), name);
+      vscode.workspace.fs.copy(vscode.Uri.file(starterPath), projectPathUri);
       vscode.commands.executeCommand('vscode.openFolder', projectPathUri, false);
     });
 }

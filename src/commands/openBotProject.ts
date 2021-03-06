@@ -32,12 +32,11 @@ export async function openBotProject() {
         return;
       }
 
-      const rootPathUri = vscode.Uri.parse(rootPath);
       const lowercaseText = name.toLowerCase();
 
       for (let filename of readdirSync(rootPath)) {
         if (filename.toLowerCase() === lowercaseText) {
-          const projectUri = vscode.Uri.joinPath(rootPathUri, filename);
+          const projectUri = vscode.Uri.file(path.join(rootPath, filename));
           vscode.commands.executeCommand('vscode.openFolder', projectUri, false);
           return;
         }

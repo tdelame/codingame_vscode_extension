@@ -1,4 +1,5 @@
 import * as vscode from 'vscode';
+import * as path from 'path';
 import { emailValidator, checkDirectoryExistsSync } from './utils';
 
 export function getConfig() {
@@ -90,7 +91,7 @@ export async function getIncludePath() {
     if (!rootPath) {
       return undefined;
     }
-    includePath = vscode.Uri.joinPath(vscode.Uri.parse(rootPath), 'tools', 'include').fsPath;
+    includePath = path.join(rootPath, 'tools', 'include');
   }
   return includePath;
 }
@@ -102,7 +103,7 @@ export async function getLibPath() {
     if (!rootPath) {
       return undefined;
     }
-    libPath = vscode.Uri.joinPath(vscode.Uri.parse(rootPath), 'tools', 'lib').fsPath;
+    libPath = path.join(rootPath, 'tools', 'lib');
   }
   return libPath;
 }
@@ -114,7 +115,7 @@ export async function getStarterPath() {
     if (!rootPath) {
       return undefined;
     }
-    starterPath = vscode.Uri.joinPath(vscode.Uri.parse(rootPath), 'tools', 'starter').fsPath;
+    starterPath = path.join(rootPath, 'tools', 'starter');
   }
   return starterPath;
 }
