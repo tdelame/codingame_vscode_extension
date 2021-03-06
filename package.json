@@ -96,6 +96,16 @@
           "default": null,
           "description": "Extra arguments passed to CMake command line when configuring the build"
         },
+        "codinGame.cCompilerPath": {
+          "type": "string",
+          "default": null,
+          "description": "Path to the C compiler to use to compile bots"
+        },
+        "codinGame.cppCompilerPath": {
+          "type": "string",
+          "default": null,
+          "description": "Path to the C++ compiler to use to compile bots"
+        },
         "codinGame.gamerPassword": {
           "type": "string",
           "default": null,

@@ -1,7 +1,7 @@
 import * as vscode from 'vscode';
 import * as child_process from 'child_process';
 import { checkFileExistsSync } from '../utils';
-import { getRootPath, getIncludePath, getLibPath, getCmakeExtraArguments } from '../config';
+import { getRootPath, getIncludePath, getLibPath, getCmakeExtraArguments, getCCompilerPath, getCppCompilerPath } from '../config';
 
 export async function configureBuild() {
 
@@ -43,8 +43,18 @@ export async function configureBuild() {
     }
 
     const execOptions = <child_process.ExecOptions>{ cwd: buildUri.fsPath };
+
+    let extraArguments = "";
+    if( getCCompilerPath() ) {
+      extraArguments += `-DCMAKE_C_COMPILER:PATH="${getCCompilerPath()}" `;
+    }
+    if( getCppCompilerPath() ) {
+      extraArguments += `-DCMAKE_CXX_COMPILER:PATH="${getCppCompilerPath()}" `;
+    }
+    extraArguments += getCmakeExtraArguments();
+
     const commandString = `cd ${buildUri.fsPath} && ` +
-      `cmake ../ -GNinja -DCMAKE_BUILD_TYPE=${buildType} ${getCmakeExtraArguments()} ` +
+      `cmake ../ -GNinja -DCMAKE_BUILD_TYPE=${buildType} ${extraArguments} ` +
       `-DPROJECT_ROOT=${rootPath} -DINCLUDE_DIR=${await getIncludePath()} -DLIB_DIR=${await getLibPath()} && ` +
       `compdb -p ${buildUri.fsPath} list > ${vscode.Uri.joinPath(rootUri, '.vscode', 'compile_commands.json').fsPath}`;
     child_process.exec(commandString, execOptions, (error, stdout, stderr) => {

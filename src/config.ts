@@ -19,6 +19,14 @@ export function getCmakeExtraArguments() {
   return fromConfig ? fromConfig : "";
 }
 
+export function getCppCompilerPath() {
+  return getConfig().get<string>('cppCompilerPath');
+}
+
+export function getCCompilerPath() {
+  return getConfig().get<string>('cCompilerPath');
+}
+
 export async function getGamerPassword() {
   let gamerPassword = getConfig().get<string>('gamerPassword');
   if (!gamerPassword) {
