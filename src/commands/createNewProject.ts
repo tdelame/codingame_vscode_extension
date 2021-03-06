@@ -31,13 +31,14 @@ export async function createNewProject() {
   };
 
   vscode.window.showInputBox(inputOptions)
-    .then(name => {
+    .then(async name => {
       if (!name) {
         return;
       }
 
-      const projectPathUri = vscode.Uri.joinPath(vscode.Uri.file(rootPath), name);
-      vscode.workspace.fs.copy(vscode.Uri.file(starterPath), projectPathUri);
+      const projectPath = path.join(rootPath, name);
+      const projectPathUri = vscode.Uri.file(projectPath);
+      await vscode.workspace.fs.copy(vscode.Uri.file(starterPath), projectPathUri);
       vscode.commands.executeCommand('vscode.openFolder', projectPathUri, false);
     });
 }
