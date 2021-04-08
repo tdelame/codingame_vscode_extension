@@ -63,9 +63,10 @@ This extension contributes the following settings:
 * `codinGame.rootPath`: set it to the root directory of your CodinGame projects.
 * `codinGame.includePath`: set it to the folder path containing common headers you use in your bots and tools. If not defined, it will be `codinGame.rootPath/tools/include`.
 * `codinGame.libPath`: set it to the folder path containing common libraries you use in your tools. If not defined, it will be `codinGame.rootPath/tools/lib`.
-* `codinGame.compilerPath`: set it to the path of the compiler you want to use to build your bots. If not defined, it will used the default compiler found on your system. I recommend `Clang` since it works nicely on all platforms, provides nice error and warning messages, and comes with a lot of useful tools
-* `codinGame.cmakeExtra`: extra arguments that are passed to `CMake` when configuring the build
 * `codinGame.starterPath`: set it to the folder path containing an initial configuration for a bot. If not defined, it will be `codingGame.rootPath/tools/starter`
+* `codinGame.cmakeExtra`: extra arguments that are passed to `CMake` when configuring the build
+* `codinGame.cCompilerPath`: path to the C compiler to use to compile bots. If not defined, `CMake` will decide itself.
+* `codinGame.cppCompilerPath`: path to the C++ compiler to use to compile bots. If not defined, `CMake` will decide itself.
 * `codinGame.gamerPassword`: set it to the password associated to your CodinGame account. I am not very proud of storing this information in settings, but I do not want to bother too much about this detail
 * `codinGame.gamerEmail`: set it to the email address associated to your CodinGame account
 * `codinGame.gameId`: set it in your project `.vscode/settings.json` file to the game Id of your bot
