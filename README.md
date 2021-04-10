@@ -2,6 +2,8 @@
 
 This extension gathers some tools I use to develop more easily bots for CodinGame. The priorities of this extension are to satisfy my current needs while being simple. As a result, the extension is not very flexible or customizable.
 
+You can read more about this extension and how to use it [in this article on my blog](https://virtual-atom.com/codingame/tooling/).
+
 Keep in mind that this extension is the first I write. Also, I never programmed in TypeScript before. Thus, there might be silly things I do here that make you want to pull your hair.
 
 > If you have any feature or improvement suggestions or want to participate in the development, let me know!
