@@ -1,21 +1,17 @@
-import * as vscode from 'vscode';
+import { ExtensionContext, commands } from 'vscode';
 
 import { createNewProject } from './commands/createNewProject';
 import { openBotProject } from './commands/openBotProject';
 import { configureBuild } from './commands/configureBuild';
 import { saveCurrentVersion } from './commands/saveCurrentVersion';
-import { getCodinGamerId } from './commands/getCodinGamerId';
-import { sendBotCode } from './commands/sendBotCode';
 
-export async function activate(context: vscode.ExtensionContext) {
-  vscode.commands.registerCommand("codingame.createNewProject", createNewProject);
-  vscode.commands.registerCommand("codingame.openBotProject", openBotProject);
-  vscode.commands.registerCommand("codingame.configureBuild", configureBuild);
-  vscode.commands.registerCommand("codingame.saveCurrentVersion", saveCurrentVersion);
-  vscode.commands.registerCommand("codingame.getCodinGamerId", getCodinGamerId);
-  vscode.commands.registerCommand("codingame.sendBotCode", sendBotCode);
-  console.log("CodinGame extension activated");
+export function activate(_context: ExtensionContext) {
+	commands.registerCommand("codingame.createNewProject", createNewProject);
+	commands.registerCommand("codingame.openBotProject", openBotProject);
+	commands.registerCommand("codingame.configureBuild", configureBuild);
+	commands.registerCommand("codingame.saveCurrentVersion", saveCurrentVersion);
+	console.log("CodinGame extension activated");
 }
 
-// this method is called when your extension is deactivated
-export function deactivate() { }
+// This method is called when your extension is deactivated
+export function deactivate() {}
