@@ -1,17 +1,9 @@
-import * as vscode from 'vscode';
-import * as path from 'path';
-import { emailValidator, checkDirectoryExistsSync } from './utils';
+import { window, workspace, InputBoxOptions, ConfigurationTarget } from 'vscode';
+import { join } from 'path';
+import { checkDirectoryExistsSync } from './utils';
 
 export function getConfig() {
-  return vscode.workspace.getConfiguration('codinGame');
-}
-
-export function getGameId() {
-  return getConfig().get<string>('gameId');
-}
-
-export function getIsMulti() {
-  return getConfig().get<boolean>('isMulti');
+  return workspace.getConfiguration('codinGame');
 }
 
 export function getCmakeExtraArguments() {
@@ -27,70 +19,26 @@ export function getCCompilerPath() {
   return getConfig().get<string>('cCompilerPath');
 }
 
-export async function getGamerPassword() {
-  let gamerPassword = getConfig().get<string>('gamerPassword');
-  if (!gamerPassword) {
-    const passwordInputOption = <vscode.InputBoxOptions>{
-      prompt: 'Enter your CodinGame Password',
-      password: true,
-      ignoreFocusOut: true
-    };
-
-    const inputPassword = await vscode.window.showInputBox(passwordInputOption);
-    if( !inputPassword) {
-      return undefined;
-    }
-
-    await getConfig().update('gamerPassword', inputPassword, vscode.ConfigurationTarget.Global);
-    gamerPassword = inputPassword;
-  }
-  return gamerPassword;
-}
-
-export async function getGamerEmail() {
-  let gamerEmail = getConfig().get<string>('gamerEmail');
-  if (!gamerEmail) {
-    const emailInputOption = <vscode.InputBoxOptions>{
-      prompt: 'Enter your CodinGame Email',
-      validateInput: (text: string): string | undefined => {
-        if (!emailValidator(text)) {
-          return 'Invalid Email';
-        }
-        return undefined;
-      }
-    };
-
-    const inputEmail = await vscode.window.showInputBox(emailInputOption);
-    if( !inputEmail) {
-      return undefined;
-    }
-
-    await getConfig().update('gamerEmail', inputEmail, vscode.ConfigurationTarget.Global);
-    gamerEmail = inputEmail;
-  }
-  return gamerEmail;
-}
-
 export async function getRootPath() {
   let rootPath = getConfig().get<string>('rootPath');
 
   if (!rootPath) {
-    vscode.window.showInformationMessage(`CodinGame root path not set. Configure the extension or set codinGame.rootPath setting in the input box`);
+    window.showInformationMessage(`CodinGame root path not set. Configure the extension or set codinGame.rootPath setting in the input box`);
 
-    const inputOptions = <vscode.InputBoxOptions>{
+    const inputOptions = <InputBoxOptions>{
       prompt: `CodinGame root path`
     };
-    await vscode.window.showInputBox(inputOptions).then(async inputRootPath => {
+    await window.showInputBox(inputOptions).then(async inputRootPath => {
       if (!inputRootPath) {
         return;
       }
 
       if (!checkDirectoryExistsSync(inputRootPath)) {
-        vscode.window.showErrorMessage(`${inputRootPath} is not an existing folder path`);
+        window.showErrorMessage(`${inputRootPath} is not an existing folder path`);
         return;
       }
 
-      await getConfig().update('rootPath', inputRootPath, vscode.ConfigurationTarget.Global);
+      await getConfig().update('rootPath', inputRootPath, ConfigurationTarget.Global);
       rootPath = inputRootPath;
     });
   }
@@ -104,7 +52,7 @@ export async function getIncludePath() {
     if (!rootPath) {
       return undefined;
     }
-    includePath = path.join(rootPath, 'tools', 'include');
+    includePath = join(rootPath, 'tools', 'include');
   }
   return includePath;
 }
@@ -116,7 +64,7 @@ export async function getLibPath() {
     if (!rootPath) {
       return undefined;
     }
-    libPath = path.join(rootPath, 'tools', 'lib');
+    libPath = join(rootPath, 'tools', 'lib');
   }
   return libPath;
 }
@@ -128,7 +76,7 @@ export async function getStarterPath() {
     if (!rootPath) {
       return undefined;
     }
-    starterPath = path.join(rootPath, 'tools', 'starter');
+    starterPath = join(rootPath, 'tools', 'starter');
   }
   return starterPath;
 }

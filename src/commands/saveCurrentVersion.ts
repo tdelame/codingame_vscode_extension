@@ -1,43 +1,43 @@
-import * as fs from 'fs';
-import * as vscode from 'vscode';
+import { appendFileSync } from 'fs';
+import { workspace, window, Uri, InputBoxOptions } from 'vscode';
 import { checkFileExistsSync } from '../utils';
 
 export async function saveCurrentVersion() {
   // fetch project name and path
-  if (vscode.workspace.workspaceFolders === undefined) {
-    vscode.window.showErrorMessage("Cannot configure CodinGame project build as there is no opened folder");
+  if (workspace.workspaceFolders === undefined) {
+    window.showErrorMessage("Cannot configure CodinGame project build as there is no opened folder");
     return;
   }
-  const rootUri = vscode.workspace.workspaceFolders[0].uri;
-  const projectName = vscode.workspace.workspaceFolders[0].name;
+  const rootUri = workspace.workspaceFolders[0].uri;
+  const projectName = workspace.workspaceFolders[0].name;
 
   // make sure current version exists as well as the CMakeLists.txt file
-  const currentVersionUri = vscode.Uri.joinPath(rootUri, 'package', 'bot.cpp');
+  const currentVersionUri = Uri.joinPath(rootUri, 'package', 'bot.cpp');
   if (!checkFileExistsSync(currentVersionUri.fsPath)) {
-    vscode.window.showErrorMessage(`${projectName}: no current bot version. Please configure and build the project first.`);
+    window.showErrorMessage(`${projectName}: no current bot version. Please configure and build the project first.`);
     return;
   }
-  const cmakeFileUri = vscode.Uri.joinPath(rootUri, 'PreviousBotVersions.cmake');
+  const cmakeFileUri = Uri.joinPath(rootUri, 'PreviousBotVersions.cmake');
 
   // ask for a version name
-  const inputOptions = <vscode.InputBoxOptions>{
+  const inputOptions = <InputBoxOptions>{
     prompt: 'Bot Version Name',
     validateInput: (text: string): string | undefined => {
-      if (checkFileExistsSync(vscode.Uri.joinPath(rootUri, 'package', text + '.cpp').fsPath)) {
+      if (checkFileExistsSync(Uri.joinPath(rootUri, 'package', text + '.cpp').fsPath)) {
         return 'A version with that name already exists';
       }
       return undefined;
     }
   };
-  vscode.window.showInputBox(inputOptions)
+  window.showInputBox(inputOptions)
     .then(name => {
       if (!name) {
         return;
       }
 
-      const newVersionUri = vscode.Uri.joinPath(rootUri, 'package', name + '.cpp');
+      const newVersionUri = Uri.joinPath(rootUri, 'package', name + '.cpp');
       const newText = `# Version ${name} created at ${Date()}\nadd_executable( ${name} "package/${name}.cpp" )\n`;
-      vscode.workspace.fs.copy(currentVersionUri, newVersionUri);
-      fs.appendFileSync(cmakeFileUri.fsPath, newText);
+      workspace.fs.copy(currentVersionUri, newVersionUri);
+      appendFileSync(cmakeFileUri.fsPath, newText);
     });
 }

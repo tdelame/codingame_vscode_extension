@@ -19,8 +19,7 @@ Create a new C++ bot project from a starter folder. The starter folder is expect
   - INCLUDE_DIR, path to the main C++ include folder where you can place common headers and external library headers,
   - LIB_DIR, path to the main C++ libraries folder where you can place external libraries.
 - the build places the source code of the different bot versions in a `package` folder. Remember that the CodinGame platform requires the bots to fit in a single file. The current bot version is in `package/bot.cpp`,
-- the `CMakeLists.txt` must ensure the file `PreviousBotVersions.cmake` exists and include it
-- define `codinGame.gameId` and `codinGame.isMulti` settings.
+- the `CMakeLists.txt` must ensure the file `PreviousBotVersions.cmake` exists and include it.
 
 I provide a working example of [starter C++ CodinGame project](https://github.com/tdelame/codingame_starter) in another repository.
 
@@ -36,16 +35,6 @@ Open a bot project store in a folder inside the root directory of your CodinGame
 ### 1.4. Save Current Bot Version
 
 Save the current version of the bot, i.e. the file `package/bot.cpp`, in a new file in the `package` folder. The new file is added the `PreviousBotVersions.cmake` in order to be compiled.
-
-### 1.5. Get CodinGamer Id
-
-Get your CodinGamer Id from the email and password associated to your CodinGame account. You may need this information for other tools.
-
-### 1.6. Send Bot Code
-
-Send a version of your bot code to CodinGame. Note that this feature is actually requesting the platform to play a match with your sent bot, in order to save the source code online. Thus, it can take 10s to 30s.
-
->TODO: Check if the bot was correctly compiled on the platform.
 
 ## 2. Requirements
 
@@ -69,14 +58,22 @@ This extension contributes the following settings:
 * `codinGame.cmakeExtra`: extra arguments that are passed to `CMake` when configuring the build
 * `codinGame.cCompilerPath`: path to the C compiler to use to compile bots. If not defined, `CMake` will decide itself.
 * `codinGame.cppCompilerPath`: path to the C++ compiler to use to compile bots. If not defined, `CMake` will decide itself.
-* `codinGame.gamerPassword`: set it to the password associated to your CodinGame account. I am not very proud of storing this information in settings, but I do not want to bother too much about this detail
-* `codinGame.gamerEmail`: set it to the email address associated to your CodinGame account
-* `codinGame.gameId`: set it in your project `.vscode/settings.json` file to the game Id of your bot
-* `codinGame.isMulti`: set it to `true` in your project `.vscode/settings.json` file if your bot is for a multiplayer game.
 
 ## 4. Known Issues
 
 ## 5. Release Notes
+
+## [2.0.1] - 2024-05-05
+
+### Changed
+- Updated extension to vscode 1.88 version
+
+### Removed
+- Send bot code and get CodinGame Id commands were removed, as the CodinGame API changes too often to rely on it
+- Removed settings associated with such commands
+
+### Fixed
+- Detect when we are trying to create a bot with an already used bot name.
 
 ## [1.0.2] - 2021-03-06
 

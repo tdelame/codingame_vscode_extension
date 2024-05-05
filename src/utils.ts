@@ -1,9 +1,8 @@
-import * as fs from 'fs';
-import * as path from 'path';
+import { stat, statSync } from 'fs';
 
 export function checkFileExists(filePath: string): Promise<boolean> {
-  return new Promise((resolve, reject) => {
-    fs.stat(filePath, (err, stats) => {
+  return new Promise((resolve, _reject) => {
+    stat(filePath, (_err, stats) => {
       if (stats && stats.isFile()) {
         resolve(true);
       } else {
@@ -12,10 +11,10 @@ export function checkFileExists(filePath: string): Promise<boolean> {
     });
   });
 }
-
+  
 export function checkDirectoryExists(dirPath: string): Promise<boolean> {
-  return new Promise((resolve, reject) => {
-    fs.stat(dirPath, (err, stats) => {
+  return new Promise((resolve, _reject) => {
+    stat(dirPath, (_err, stats) => {
       if (stats && stats.isDirectory()) {
         resolve(true);
       } else {
@@ -24,10 +23,10 @@ export function checkDirectoryExists(dirPath: string): Promise<boolean> {
     });
   });
 }
-
+  
 export function checkFileExistsSync(filePath: string): boolean {
   try {
-    return fs.statSync(filePath).isFile();
+    return statSync(filePath).isFile();
   } catch (e) {
   }
   return false;
@@ -35,32 +34,8 @@ export function checkFileExistsSync(filePath: string): boolean {
 
 export function checkDirectoryExistsSync(dirPath: string): boolean {
   try {
-    return fs.statSync(dirPath).isDirectory();
+    return statSync(dirPath).isDirectory();
   } catch (e) {
   }
   return false;
-}
-
-export function emailValidator(email: string) {
-  const re = /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
-  return re.test(String(email).toLowerCase());
-}
-
-export function getVersionNameArray(projectFolderPath: string) {
-  const packageFolderPath = path.join(projectFolderPath, 'package');
-  const result: string[] = [];
-
-  fs.readdirSync(packageFolderPath).forEach(filename => {
-    const extension = path.extname(filename);
-    if (extension === '.cpp') {
-      result.push(filename === 'bot.cpp' ? '[current]' : filename.substring(0, filename.length - 4));
-    }
-  });
-
-  return result;
-}
-
-export function getVersionCode(projectFolderPath: string, versionName: string) {
-  const versionPath = path.join(projectFolderPath, 'package', (versionName === '[current]' ? 'bot' : versionName)+ '.cpp');
-  return fs.readFileSync(versionPath, 'utf-8');
 }

@@ -1,22 +1,22 @@
-import * as vscode from 'vscode';
-import * as child_process from 'child_process';
+import { workspace, window, QuickPickOptions, Uri } from 'vscode';
+import { exec, ExecOptions } from 'child_process';
 import { checkFileExistsSync } from '../utils';
 import { getRootPath, getIncludePath, getLibPath, getCmakeExtraArguments, getCCompilerPath, getCppCompilerPath } from '../config';
 
 export async function configureBuild() {
 
   // fetch project name and path
-  if (vscode.workspace.workspaceFolders === undefined) {
-    vscode.window.showErrorMessage("Cannot configure CodinGame project build as there is no opened folder");
+  if (workspace.workspaceFolders === undefined) {
+    window.showErrorMessage("Cannot configure CodinGame project build as there is no opened folder");
     return;
   }
-  const rootUri = vscode.workspace.workspaceFolders[0].uri;
-  const projectName = vscode.workspace.workspaceFolders[0].name;
+  const rootUri = workspace.workspaceFolders[0].uri;
+  const projectName = workspace.workspaceFolders[0].name;
 
   // make sure the current project folder contains a CMakeLists.txt that will be used to configure the build
-  const cmakeListsUri = vscode.Uri.joinPath(rootUri, "CMakeLists.txt");
+  const cmakeListsUri = Uri.joinPath(rootUri, "CMakeLists.txt");
   if (!checkFileExistsSync(cmakeListsUri.fsPath)) {
-    vscode.window.showInformationMessage(`CodinGame project ${projectName} has no CMakeLists.txt file in its root directory`);
+    window.showInformationMessage(`CodinGame project ${projectName} has no CMakeLists.txt file in its root directory`);
     return;
   }
 
@@ -27,22 +27,22 @@ export async function configureBuild() {
   }
 
   // ensure the build directory exists
-  const buildUri = vscode.Uri.joinPath(rootUri, "build");
-  vscode.workspace.fs.createDirectory(buildUri);
+  const buildUri = Uri.joinPath(rootUri, "build");
+  workspace.fs.createDirectory(buildUri);
 
   // create a pick window to chose build type
-  const pickOptions = <vscode.QuickPickOptions>{
+  const pickOptions = <QuickPickOptions>{
     placeHolder: `Choose build type for ${projectName}`,
     canPickMany: false,
   };
-  vscode.window.showQuickPick(["Dev", "Release", "Debug"], pickOptions).then(async buildType => {
+  window.showQuickPick(["Dev", "Release", "Debug"], pickOptions).then(async buildType => {
 
     // abord the configuration when the used escaped the pick window
     if (typeof buildType === "undefined") {
       return;
     }
 
-    const execOptions = <child_process.ExecOptions>{ cwd: buildUri.fsPath };
+    const execOptions = <ExecOptions>{ cwd: buildUri.fsPath };
 
     let extraArguments = "";
     if( getCCompilerPath() ) {
@@ -56,14 +56,14 @@ export async function configureBuild() {
     const commandString = `cd ${buildUri.fsPath} && ` +
       `cmake ../ -GNinja -DCMAKE_BUILD_TYPE=${buildType} ${extraArguments} ` +
       `-DPROJECT_ROOT=${rootPath} -DINCLUDE_DIR=${await getIncludePath()} -DLIB_DIR=${await getLibPath()} && ` +
-      `compdb -p ${buildUri.fsPath} list > ${vscode.Uri.joinPath(rootUri, '.vscode', 'compile_commands.json').fsPath}`;
-    child_process.exec(commandString, execOptions, (error, stdout, stderr) => {
+      `compdb -p ${buildUri.fsPath} list > ${Uri.joinPath(rootUri, '.vscode', 'compile_commands.json').fsPath}`;
+    exec(commandString, execOptions, (error, stdout, stderr) => {
       if (error) {
-        vscode.window.showErrorMessage(`Failed to configure ${buildType} build for ${projectName}: ${stderr}`);
+        window.showErrorMessage(`Failed to configure ${buildType} build for ${projectName}: ${stderr}`);
         return;
       }
 
-      vscode.window.showInformationMessage(`${projectName}: ${buildType} build successfully configured`);
+      window.showInformationMessage(`${projectName}: ${buildType} build successfully configured`);
     });
   });
 }

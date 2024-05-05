@@ -1,6 +1,6 @@
 import { readdirSync } from 'fs';
-import * as vscode from 'vscode';
-import * as path from 'path';
+import { InputBoxOptions, window, commands, Uri } from 'vscode';
+import { join } from 'path';
 import { getRootPath } from '../config';
 
 export async function openBotProject() {
@@ -12,7 +12,7 @@ export async function openBotProject() {
   }
 
   // ask for a project name
-  const inputOptions = <vscode.InputBoxOptions>{
+  const inputOptions = <InputBoxOptions>{
     prompt: `CodinGame Bot Name`,
     validateInput: (text: string): string | undefined => {
       const lowercaseText = text.toLowerCase();
@@ -26,7 +26,7 @@ export async function openBotProject() {
     }
   };
 
-  vscode.window.showInputBox(inputOptions)
+  window.showInputBox(inputOptions)
     .then(name => {
       if (!name) {
         return;
@@ -36,12 +36,12 @@ export async function openBotProject() {
 
       for (let filename of readdirSync(rootPath)) {
         if (filename.toLowerCase() === lowercaseText) {
-          const projectUri = vscode.Uri.file(path.join(rootPath, filename));
-          vscode.commands.executeCommand('vscode.openFolder', projectUri, false);
+          const projectUri = Uri.file(join(rootPath, filename));
+          commands.executeCommand('vscode.openFolder', projectUri, false);
           return;
         }
       }
 
-      vscode.window.showErrorMessage(`Cannot find any ${path.join(rootPath, name)} folder`);
+      window.showErrorMessage(`Cannot find any ${join(rootPath, name)} folder`);
     });
 }
